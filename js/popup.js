@@ -1,9 +1,10 @@
-var req = new XMLHttpRequest();
+var req;
 var page = 0;
 var goSearch = function(e){
+	req = new XMLHttpRequest();
 	var search_string = document.getElementById("search").value || "cute babies";
 	search_string.replace(" ","%20");
-	
+
 	req.open(
 		"GET",
 		"http://api.flickr.com/services/rest/?" +
@@ -23,26 +24,26 @@ var goSearch = function(e){
 
 function showPhotos() {
 	var photos = req.responseXML.getElementsByTagName("photo");
-	
+
 	for (var i = 0, photo; photo = photos[i]; i++) {
 		console.log(photo);
-		
+
 		var img = document.createElement("image");
 		img.src = constructImageURL(photo,"s");
-		
+
 		var a_link = document.createElement("a");
 		a_link.href = constructImageURL(photo,"z");
 		a_link.target = "_blank";
 		a_link.appendChild(img);
-		
+
 		var title = document.createElement("div");
 		title.className="image_title";
 		title.textContent = photo.getAttribute("title");
-		
+
 		var views = document.createElement("div");
 		views.className="image_views";
 		views.textContent = photo.getAttribute("views");
-		
+
 		var span = document.createElement("span");
 		span.id = photo.getAttribute("id");
 		span.appendChild(a_link);
