@@ -30,6 +30,7 @@ function showPhotos() {
 
 		var img = document.createElement("image");
 		img.src = constructImageURL(photo,"s");
+		img.className="pic";
 		img.setAttribute("data-id",photo.getAttribute("id"));
 		img.setAttribute("data-owner",photo.getAttribute("owner"));
 		img.setAttribute("data-secret",photo.getAttribute("secret"));
@@ -45,21 +46,21 @@ function showPhotos() {
 		a_link.appendChild(img);
 
 		var title = document.createElement("div");
-		title.className="image_title";
+		title.className="title";
 		title.textContent = photo.getAttribute("title");
 
 		var views = document.createElement("div");
-		views.className="image_views";
+		views.className="views";
 		views.textContent = photo.getAttribute("views");
 
-		var span = document.createElement("span");
-		span.id = photo.getAttribute("id");
-		span.className="pic";
-		span.appendChild(a_link);
-		span.appendChild(title);
-		span.appendChild(views);
+		var frame = document.createElement("div");
+		frame.id = photo.getAttribute("id");
+		frame.className="frame";
+		frame.appendChild(a_link);
+		frame.appendChild(title);
+		frame.appendChild(views);
 
-		document.getElementById("pics").appendChild(span);
+		document.getElementById("pics").appendChild(frame);
 	}
 }
 

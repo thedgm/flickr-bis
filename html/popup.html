@@ -4,7 +4,7 @@
 		<title>Getting Started Extension's Popup</title>
 		<style>
 			body {
-				min-width:457px;
+				min-width:490px;
 				overflow-x:hidden;
 			}
 
@@ -14,17 +14,37 @@
 				margin: 10px auto;
 			}
 
-			span a img {
-				margin:7px;
+			.frame {
+				width: 140px;
+				height: 230px;
+				float: left;
+				border: 1px solid gray;
+				border-radius: 8px;
+				margin: 2px;
+				padding: 8px;
+			}
+			.pic {
+				margin:8px;
 				vertical-align:middle;
 				width:125px;
 				height:125px;
 			}
-			span a img:hover {
-				margin:1px;
+			.pic:hover {
+				margin:0 0 0 -8px;
 				border:0;
-				width:137px;
-				height:137px;
+				width:156px;
+				height:156px;
+			}
+			.title {
+				margin: 10px 0 10px 0;
+			}
+			.title, .views {
+				width: 125px;
+				font-size: 10px;
+			}
+			.views {
+				color: green;
+				font-weight: bold;
 			}
 			#bottom_marker, #pics {
 				clear:both;
