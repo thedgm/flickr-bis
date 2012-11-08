@@ -8,10 +8,13 @@
 				overflow-x:hidden;
 			}
 
-			input {
+			.search_text {
 				clear: both;
-				width: 250px;
+				width: 440px;
 				margin: 10px auto;
+				border-radius: 10px;
+				font-size: 20px;
+				padding: 5px 20px 5px 20px;
 			}
 
 			.frame {
@@ -37,15 +40,8 @@
 			}
 			.title {
 				margin: 0 0 10px 0;
-			}
-			.title, .views {
 				width: 125px;
 				font-size: 10px;
-			}
-			.views {
-				color: green;
-				font-size: 12px;
-				font-weight: bold;
 			}
 			#bottom_marker, #pics {
 				clear:both;
@@ -53,8 +49,8 @@
 		</style>
 	</head>
 	<body>
-	<h3>Better Image Search for Flickr</h3>
-		Search Flickr for <input id="search" name="search" type="text" value="" />
+		<h3>Better Image Search for Flickr</h3>
+		<input id="search" name="search" type="text" value="" class="search_text"/>
 		<div id="pics"></div>
 		<div id="bottom_marker">&nbsp;</div>
 		<script src="../js/popup.js"></script>

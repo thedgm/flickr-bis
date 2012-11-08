@@ -49,16 +49,11 @@ function showPhotos() {
 		title.className="title";
 		title.textContent = photo.getAttribute("title");
 
-		var views = document.createElement("div");
-		views.className="views";
-		views.textContent = "views: "+photo.getAttribute("views");
-
 		var frame = document.createElement("div");
 		frame.id = photo.getAttribute("id");
 		frame.className="frame";
 		frame.appendChild(a_link);
 		frame.appendChild(title);
-		frame.appendChild(views);
 
 		document.getElementById("pics").appendChild(frame);
 	}
