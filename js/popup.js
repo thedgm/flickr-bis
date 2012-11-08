@@ -51,7 +51,7 @@ function showPhotos() {
 
 		var views = document.createElement("div");
 		views.className="views";
-		views.textContent = photo.getAttribute("views");
+		views.textContent = "views: "+photo.getAttribute("views");
 
 		var frame = document.createElement("div");
 		frame.id = photo.getAttribute("id");
