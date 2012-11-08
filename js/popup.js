@@ -30,6 +30,14 @@ function showPhotos() {
 
 		var img = document.createElement("image");
 		img.src = constructImageURL(photo,"s");
+		img.setAttribute("data-id",photo.getAttribute("id"));
+		img.setAttribute("data-owner",photo.getAttribute("owner"));
+		img.setAttribute("data-secret",photo.getAttribute("secret"));
+		img.setAttribute("data-secret",photo.getAttribute("secret"));
+		img.setAttribute("data-server",photo.getAttribute("server"));
+		img.setAttribute("data-farm",photo.getAttribute("farm"));
+		img.setAttribute("data-title",photo.getAttribute("title"));
+		img.setAttribute("data-views",photo.getAttribute("views"));
 
 		var a_link = document.createElement("a");
 		a_link.href = constructImageURL(photo,"z");
@@ -46,6 +54,7 @@ function showPhotos() {
 
 		var span = document.createElement("span");
 		span.id = photo.getAttribute("id");
+		span.className="pic";
 		span.appendChild(a_link);
 		span.appendChild(title);
 		span.appendChild(views);
