@@ -49,16 +49,9 @@ function showPhotos() {
 		span.appendChild(a_link);
 		span.appendChild(title);
 		span.appendChild(views);
-		document.body.appendChild(span);
+
+		document.getElementById("pics").appendChild(span);
 	}
-	var next_btn = document.createElement("button");
-	next_btn.onclick = function(){
-		++page;
-		document.getElementsByTagName("span");
-		goSearch();
-	};
-	next_btn.value = "To page "+page;
-	document.body.appendChild(next_btn);
 }
 
 // See: http://www.flickr.com/services/api/misc.urls.html
@@ -88,8 +81,16 @@ function sort_items(items, order){
 var search_changed = function(e){
 	goSearch(e);
 }
-
+var scrolled = function(e) {
+	var marker = document.getElementById("bottom_marker");
+	if (marker.offsetHeight + marker.scrollTop >= marker.scrollHeight) {
+		++page;
+		goSearch();
+	}
+}
 
 window.onload = function(){
 	document.getElementById("search").onchange = search_changed;
+	document.onscroll = scrolled;
+
 }
