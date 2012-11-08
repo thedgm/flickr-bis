@@ -82,10 +82,11 @@ var search_changed = function(e){
 	goSearch(e);
 }
 var scrolled = function(e) {
-	var marker = document.getElementById("bottom_marker");
-	if (marker.offsetHeight + marker.scrollTop >= marker.scrollHeight) {
+	console.log(document.body.scrollTop+100, document.body.scrollHeight, document.body.scrollTop+100 >= document.body.scrollHeight);
+	if (document.body.scrollTop+700 >= document.body.scrollHeight) {
 		++page;
-		goSearch();
+		goSearch(e);
+		console.log("goSearch "+page);
 	}
 }
 
