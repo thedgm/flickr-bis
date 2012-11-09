@@ -1,3 +1,4 @@
+var PHOTOS_PER_CALL = 20;
 var req;
 var page = 0;
 var goSearch = function(e){
@@ -14,7 +15,7 @@ var goSearch = function(e){
 		"safe_search=1&" +  // 1 is "safe"
 		"content_type=1&" +  // 1 is "photos only"
 		"sort=relevance&" +  // another good one is "interestingness-desc"
-		"per_page=20&" +
+		"per_page="+PHOTOS_PER_CALL+"&" +
 		"page="+page +"&"+
 		"extras=description,views",
 		true);
@@ -25,6 +26,9 @@ var goSearch = function(e){
 function showPhotos() {
 	var photos = req.responseXML.getElementsByTagName("photo");
 
+	if (photos.length > PHOTOS_PER_CALL) {
+		++page;
+	}
 	for (var i = 0, photo; photo = photos[i]; i++) {
 		console.log(photo);
 
@@ -89,7 +93,6 @@ var search_changed = function(e){
 var scrolled = function(e) {
 	console.log(document.body.scrollTop+100, document.body.scrollHeight, document.body.scrollTop+100 >= document.body.scrollHeight);
 	if (document.body.scrollTop+700 >= document.body.scrollHeight) {
-		++page;
 		goSearch(e);
 		console.log("goSearch "+page);
 	}
