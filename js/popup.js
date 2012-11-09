@@ -1,6 +1,7 @@
 var PHOTOS_PER_CALL = 20;
+var search_in_progress = false;
 var req;
-var page = 0;
+var page = -1;
 var goSearch = function(e){
 	req = new XMLHttpRequest();
 	var search_string = document.getElementById("search").value || "cute babies";
@@ -16,7 +17,7 @@ var goSearch = function(e){
 		"content_type=1&" +  // 1 is "photos only"
 		"sort=relevance&" +  // another good one is "interestingness-desc"
 		"per_page="+PHOTOS_PER_CALL+"&" +
-		"page="+page +"&"+
+		"page="+ (++page) +"&"+
 		"extras=description,views",
 		true);
 	req.onload = showPhotos;
@@ -26,12 +27,7 @@ var goSearch = function(e){
 function showPhotos() {
 	var photos = req.responseXML.getElementsByTagName("photo");
 
-	if (photos.length > PHOTOS_PER_CALL) {
-		++page;
-	}
 	for (var i = 0, photo; photo = photos[i]; i++) {
-		console.log(photo);
-
 		var img = document.createElement("image");
 		img.src = constructImageURL(photo,"s");
 		img.className="pic";
@@ -61,6 +57,7 @@ function showPhotos() {
 
 		document.getElementById("pics").appendChild(frame);
 	}
+	search_in_progress = false;
 }
 
 // See: http://www.flickr.com/services/api/misc.urls.html
@@ -91,15 +88,15 @@ var search_changed = function(e){
 	goSearch(e);
 }
 var scrolled = function(e) {
-	console.log(document.body.scrollTop+100, document.body.scrollHeight, document.body.scrollTop+100 >= document.body.scrollHeight);
-	if (document.body.scrollTop+700 >= document.body.scrollHeight) {
-		goSearch(e);
-		console.log("goSearch "+page);
+	if (document.body.scrollTop+800 >= document.body.scrollHeight) {
+		if ( ! search_in_progress ){
+			search_in_progress = true;
+			goSearch(e);
+		}
 	}
 }
 
 window.onload = function(){
 	document.getElementById("search").onchange = search_changed;
 	document.onscroll = scrolled;
-
 }
