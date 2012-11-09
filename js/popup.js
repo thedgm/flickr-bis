@@ -2,17 +2,60 @@ var PHOTOS_PER_CALL = 20;
 var search_in_progress = false;
 var req;
 var page = -1;
+var download_img = function(e){
+	var url = this.dataset.zurl.replace("http://","https://");
+
+	/*
+	var xhri = new XMLHttpRequest();
+	xhri.open("GET",url,true);
+	xhri.overrideMimeType("application/octet-stream"); // Or what ever mimeType you want.
+	xhri.onreadystatechanged = function() {
+		if(xhri.readyState == 4 && xhr.status == 200) {
+
+			var blob = xhri.responseBlob();
+			var saveas = document.createElement("iframe");
+			saveas.style.display = "none";
+
+			if(!!window.createObjectURL == false) {
+				saveas.src = window.webkitURL.createObjectURL(blob);
+			}
+			else {
+				saveas.src = window.createObjectURL(blob);
+			}
+
+			document.body.appendChild(saveas);
+		}
+	}
+	xhri.send(null);
+	*/
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.responseType = 'blob';
+	xhr.onload = function(e) {
+		/*
+		var img = document.createElement('img');
+		img.src = window.webkitURL.createObjectURL(this.response);
+		document.body.appendChild(img);
+		*/
+		var saveas = document.createElement("iframe");
+		saveas.src = window.webkitURL.createObjectURL(this.response);
+		saveas.style.display = "none";
+		document.body.appendChild(saveas);
+	};
+
+	xhr.send();
+}
+
 var goSearch = function(e){
 	req = new XMLHttpRequest();
 	var search_string = document.getElementById("search").value || "cute babies";
-	search_string.replace(" ","%20");
 
 	req.open(
 		"GET",
 		"http://api.flickr.com/services/rest/?" +
 		"method=flickr.photos.search&" +
 		"api_key=f5b96cc86e85c4224721d46bc9a56483&" +
-		"text="+search_string+"&" +
+		"text="+search_string.replace(" ","%20")+"&" +
 		"safe_search=1&" +  // 1 is "safe"
 		"content_type=1&" +  // 1 is "photos only"
 		"sort=relevance&" +  // another good one is "interestingness-desc"
@@ -39,11 +82,15 @@ function showPhotos() {
 		img.setAttribute("data-farm",photo.getAttribute("farm"));
 		img.setAttribute("data-title",photo.getAttribute("title"));
 		img.setAttribute("data-views",photo.getAttribute("views"));
-
+		img.setAttribute("data-zurl",constructImageURL(photo,"z"));
+		/*
 		var a_link = document.createElement("a");
 		a_link.href = constructImageURL(photo,"z");
 		a_link.target = "_blank";
 		a_link.appendChild(img);
+		*/
+		img.onclick=download_img;
+
 
 		var title = document.createElement("div");
 		title.className="title";
@@ -52,7 +99,8 @@ function showPhotos() {
 		var frame = document.createElement("div");
 		frame.id = photo.getAttribute("id");
 		frame.className="frame";
-		frame.appendChild(a_link);
+		//frame.appendChild(a_link);
+		frame.appendChild(img);
 		frame.appendChild(title);
 
 		document.getElementById("pics").appendChild(frame);
