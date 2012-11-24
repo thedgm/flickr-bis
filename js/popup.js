@@ -91,7 +91,27 @@ var scrolled = function(e) {
 	}
 }
 
-window.onload = function(){
-	document.getElementById("search").onchange = search_changed;
-	document.onscroll = scrolled;
+var clone_tab = function(e){
+	var text=document.getElementById("search").value;
+	chrome.tabs.create({
+		url: "/html/popup.html?search="+document.querySelector('#search').value,
+		active: false
+	}, function(tab){
+		
+	})
+
 }
+
+//window.onload = function(){
+document.addEventListener('DOMContentLoaded', function () {
+	document.querySelector('#search').addEventListener('change', search_changed);
+	document.querySelector('#clone').addEventListener('click', clone_tab);
+	document.addEventListener('scroll', scrolled);
+
+	//coming from cloned search?
+	var sg = window.location.search.replace( "?", "" ).split("=")[1];
+	if (sg){
+		document.querySelector('#search').value=sg; 
+		search_changed();		
+	}
+})

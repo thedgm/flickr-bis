@@ -1,5 +1,5 @@
 {
-	"version"		: "0.0.0.5",
+	"version"		: "0.0.0.6",
 	"manifest_version"	: 2,
 	"name"			: "Flickr-BIS",
 	"description"		: "Better Image Search for Flickr",
@@ -8,6 +8,8 @@
 		"default_popup"		: "html/popup.html"
 	},
 	"permissions": [
-		"*://*.flickr.com/"
-	]
+		"*://*.flickr.com/",
+		"tabs"
+	],
+	"content_security_policy": "script-src 'self' chrome-extension://; object-src 'self' chrome-extension-resource://;"
 }
