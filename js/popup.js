@@ -43,7 +43,7 @@ function showPhotos() {
 	var searched = document.getElementById("search").value;
 	var photos = req.responseXML.getElementsByTagName("photo");
 	for (var i = 0, photo; photo = photos[i]; i++) {
-		var img = document.createElement("image");
+		var img = document.createElement("img");
 		img.src = constructImageURL(photo,"s");
 		img.className="pic";
 		img.setAttribute("data-id",photo.getAttribute("id"));
