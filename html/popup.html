@@ -1,47 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Getting Started Extension's Popup</title>
 		<style>
 			body {
-				min-width:490px;
+				min-width:380px;
 				overflow-x:hidden;
 			}
 
-			.search_text {
-				clear: both;
-				width: 440px;
-				margin: 10px auto;
-				border-radius: 10px;
-				font-size: 20px;
-				padding: 5px 20px 5px 20px;
+			.search{
+				width: 360px;
+				margin: 8px auto;
+				border-radius: 8px;
+				font-size: 15px;
+				padding: 3px 10px 3px 10px;
 			}
 
 			.frame {
-				width: 140px;
-				height: 230px;
-				float: left;
+				width: 360px;
 				border: 1px solid gray;
 				border-radius: 8px;
-				margin: 2px;
-				padding: 8px;
+				margin: 2px auto;
+			}
+			.off {
+				display: none;
 			}
 			.pic {
-				margin:8px 8px 18px 8px;
+				width: 340px;
+				margin:6px;
 				vertical-align:middle;
-				width:125px;
-				height:125px;
-			}
-			.pic:hover {
-				margin:-9px 0 2px -9px;
-				border:0;
-				width:158px;
-				height:158px;
 			}
 			.title {
-				margin: 0 0 10px 0;
-				width: 125px;
-				font-size: 10px;
+				margin: -60px 6px 6px 6px;
+				padding: 10px;
+				width: 340px;
+				font-size: 12px;
+				color: #fdb;
+				background: #136;
+				opacity: 0.5;
+			}
+			h3 {
+				float: left;
+				margin-top: 7px;
+			}
+			#clone {
+				float:right;
+				margin-top: 10px;
 			}
 			#bottom_marker, #pics {
 				clear:both;
@@ -49,10 +53,7 @@
 		</style>
 	</head>
 	<body>
-		<h3>Better Image Search for Flickr</h3><button id="clone" name="clone">Clone</button>
-		<input id="search" name="search" type="text" value="" class="search_text"/>
-		<div id="pics"></div>
-		<div id="bottom_marker">&nbsp;</div>
+		<h3>Better Image Search for Flickr</h3>
 		<script src="/js/popup.js"></script>
 	</body>
 </html>
