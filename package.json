@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "mypack": "npm run myprepack && mv built/popup.js crx/js/popup.js",
+    "myprepack": "tsc"
+  },
   "dependencies": {
     "source-map-loader": "^4.0.2"
   },
