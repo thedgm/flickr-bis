@@ -1,13 +1,31 @@
 {
+  "name": "flickr-bis",
+  "version": "0.0.0.10",
+  "description": "Chrome extension for better image search",
+  "main": "index.js",
   "scripts": {
-    "mypack": "npm run myprepack && mv built/popup.js crx/js/popup.js",
+    "build": "webpack --config webpack/webpack.config.js",
+    "mypack": "npm run myprepack && mv built/popup.js dist/js/popup.js",
     "myprepack": "tsc"
   },
-  "dependencies": {
-    "source-map-loader": "^4.0.2"
-  },
+  "keywords": [
+    "flick",
+    "search",
+    "extension"
+  ],
+  "author": "theDGM",
+  "license": "ISC",
   "devDependencies": {
+    "@types/chrome": "^0.0.256",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "html-webpack-plugin": "^5.6.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "post-loader": "^2.0.0",
+    "source-map-loader": "^4.0.2",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   }
 }
