@@ -1,5 +1,5 @@
 {
-	"version"		: "0.0.0.9",
+	"version"		: "0.0.0.10",
 	"manifest_version"	: 3,
 	"name"			: "Flickr-BIS",
 	"description"		: "Better image search for Flickr",

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "source-map-loader": "^4.0.2"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3"
+  }
+}
