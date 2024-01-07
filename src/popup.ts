@@ -1,48 +1,54 @@
 import "./popup.css";
 class Tab {
-    private api_key: string = "f5b96cc86e85c4224721d46bc9a56483";
-    private search_in_progress: boolean = false;
-    private req: XMLHttpRequest;
-    private PHOTOS_PER_CALL: number = 20;
-    private _page: Number = 0;
-    get page(): Number {
-        return this._page;
+    private api_key: string = "f5b96cc86e85c4224721d46bc9a56483"
+    private search_in_progress: boolean = false
+    private req: XMLHttpRequest
+    private PHOTOS_PER_CALL: number = 20
+    private page: Number = 0
+    private clone: HTMLButtonElement = document.createElement("button")
+    private clone_text: Text = document.createTextNode('Tab')
+    private pics: HTMLDivElement = document.createElement("div")
+    private bottom: HTMLDivElement = document.createElement("div")
+    private search: HTMLInputElement = document.createElement("input")
+    private ui_is_generated: boolean = false;
+    private composePropertyValue(o:Element, i:string, d: string): string{
+        return o?.getAttribute(i)?.toString() || d
     }
-
-    set page(value: Number) {
-        this._page = value;
+    private constructImageURL(photo: Element, size: string): string {
+        return "https://farm" + photo.getAttribute("farm") +
+            ".static.flickr.com/" + photo.getAttribute("server") +
+            "/" + photo.getAttribute("id") +
+            "_" + photo.getAttribute("secret") +
+            "_" + size + ".jpg";
     }
 
     constructor() {
         this.req = new XMLHttpRequest();
-        document.addEventListener('DOMContentLoaded', this.gen_ui);
+        document.addEventListener('DOMContentLoaded', ()=>this.gen_ui(document.body));
     }
-    gen_ui() {
-        const clone: HTMLButtonElement = document.createElement("button");
-        clone.id = 'clone';
-        clone.disabled = true;
-        const clone_text: Text = document.createTextNode('Tab');
-        clone.appendChild(clone_text);
-        clone.addEventListener('click', this.clone_tab);
-        const search: HTMLInputElement = document.createElement("input");
-        search.id = 'search';
-        search.className = 'search';
-        search.addEventListener('change', this.goSearch);
-        const pics: HTMLDivElement = document.createElement("div");
-        pics.id = 'pics';
-        const bottom: HTMLDivElement = document.createElement("div");
-        bottom.id = 'bottom_marker';
-        const body: HTMLElement = document.body;
-        body.appendChild(clone);
-        body.appendChild(search);
-        search.focus();
-        body.appendChild(pics);
-        body.appendChild(bottom);
-        // this.attach_events()
+    gen_ui(parent: HTMLElement = document.body){
+        if (this.ui_is_generated) return
+        this.ui_is_generated = true
+
+        this.clone.id = 'clone';
+        this.clone.disabled = true;
+        this.clone.appendChild(this.clone_text);
+        this.clone.addEventListener('click', () => this.clone_tab());
+        parent.appendChild(this.clone);
+        this.search.id = 'search';
+        this.search.className = 'search';
+        this.search.addEventListener('change', () => this.goSearch());
+        parent.appendChild(this.search);
+        this.search.focus();
+        this.pics.id = 'pics';
+        parent.appendChild(this.pics);
+        this.bottom.id = 'bottom_marker';
+        parent.appendChild(this.bottom);
+
         //coming from cloned search?
         const sg = window.location.search.replace("?", "").split("=")[1];
         if (sg) {
-            this.byId('search')?.setAttribute("value", sg)
+            document.getElementById('search')?.setAttribute("value", sg)
             this.goSearch();
         }
         document.addEventListener('keydown', this.keydowned);
@@ -51,7 +57,7 @@ class Tab {
 
     clone_tab(){
         const popupUrl = "popup.html"
-        const element = this.bySelector("#search") as HTMLInputElement  | null
+        const element = document.querySelector("#search") as HTMLInputElement  | null
         const search: string | undefined = element?.value
         const createProps = {
             url: search ? popupUrl + "?search=" + search : popupUrl,
@@ -59,14 +65,8 @@ class Tab {
         }
         chrome.tabs.create( createProps,() => {});
     }
-    private byId(id: string): HTMLElement | null {
-        return document.getElementById(id)
-    }
-    private bySelector(selector: string): HTMLElement | null {
-        return document.querySelector(selector)
-    }
-    goSearch() {
-        const element: HTMLElement | null = this.byId("search")
+    private goSearch() {
+        const element: HTMLElement | null = document.getElementById("search")
         let searchString: string = element?.getAttribute("value") || "cute babies";
         const params = new URLSearchParams({
             method:"flickr.photos.search",
@@ -79,31 +79,16 @@ class Tab {
             page: this.page.toString(),
             extras: ["description","views"].toString()
         })
-        const baseUrl: URL = new URL("https://api.flickr.com")
-        const url: URL = new URL("/services/rest?" + params, baseUrl)
+        const url: URL = new URL("https://api.flickr.com/services/rest?" + params)
         this.req.open("GET", url,true);
-        this.req.onload = this.showPhotos;
+        this.req.onload = () => this.showPhotos();
         this.req.send(null);
     }
-    attach_events(){
-        //coming from cloned search?
-        const sg = window.location.search.replace("?", "").split("=")[1];
-        if (sg) {
-            this.byId('search')?.setAttribute("value", sg)
-            this.goSearch();
-        }
-        document.addEventListener('keydown', this.keydowned);
-        document.addEventListener('scroll', this.scrolled);
-    }
-
-    private composePropertyValue(o:Element, i:string, d: string): string{
-          return o?.getAttribute(i)?.toString() || d
-    }
     showPhotos() {
-        let searchedElement: HTMLElement | null = this.byId("search")
+        let searchedElement: HTMLElement | null = document.getElementById("search")
         let searched: string | null | undefined = searchedElement?.getAttribute("value")?.toString() || "cute babies"
         let photos: HTMLCollectionOf<Element> | undefined = this.req.responseXML?.getElementsByTagName("photo")
-        const clone_btn:HTMLElement | null = this.byId('clone');
+        const clone_btn:HTMLElement | null = document.getElementById('clone');
         if (photos?.length && clone_btn?.getAttribute("disabled"))
             clone_btn?.setAttribute("disabled", String(false));
 
@@ -124,7 +109,7 @@ class Tab {
             img.setAttribute("data-views", this.composePropertyValue(photo, "views", "no-views-"+photoIndex))
             img.setAttribute("data-zurl", this.constructImageURL(photo, "z"));
             img.onclick = () => {this.download_img(img)};
-            var title = document.createElement("div");
+            const title = document.createElement("div");
             title.className = "title";
             title.textContent = this.composePropertyValue(photo, "title", "no-title-"+photoIndex)
             let frame: HTMLDivElement = document.createElement("div");
@@ -142,7 +127,6 @@ class Tab {
             document.getElementById('pics')?.focus();
         }
     }
-
     scrolled() {
         if (document.body.scrollTop + 800 >= document.body.scrollHeight) {
             if (!this.search_in_progress) {
@@ -177,7 +161,6 @@ class Tab {
             }
         }
     }
-
     keydowned(e: { keyCode: any; }) {
         const k = e.keyCode;
         switch (true) {
@@ -191,17 +174,9 @@ class Tab {
                 this.goSearch();
                 break;
             case (k === 40): // down -> clone
-                this.byId('clone')?.click();
+                document.getElementById('clone')?.click();
                 break;
         }
-    }
-
-    constructImageURL(photo: Element, size: string): string {
-        return "https://farm" + photo.getAttribute("farm") +
-            ".static.flickr.com/" + photo.getAttribute("server") +
-            "/" + photo.getAttribute("id") +
-            "_" + photo.getAttribute("secret") +
-            "_" + size + ".jpg";
     }
 
     download_img(h: HTMLImageElement){
@@ -212,7 +187,7 @@ class Tab {
         const searched = h?.dataset?.searched?.split(" ").join("_")
         const filename = h?.dataset?.title?.split(" ").join("_") + ".jpg";
         xhr.responseType = 'blob';
-        xhr.onload = function (e) {
+        xhr.onload = function () {
             chrome.tabs.create({
                 url: window.webkitURL.createObjectURL(this.response) + "#/" + searched + "--" + filename,
                 active: false
